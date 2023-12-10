@@ -1,5 +1,6 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/xHnRfY9D)
-# CS3240 Project: Group B29
+# Hoo's Hot; CS3240 Project: Group B29
+
+Please access the hosted version of this repo on Heroku at: https://adv-software-dev-project-82c26c41941d.herokuapp.com/
 
 ## Purpose
 
