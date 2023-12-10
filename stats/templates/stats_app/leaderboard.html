@@ -1,0 +1,116 @@
+{% load static %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<title>Hoo's Hot | Stats</title>
+<style>
+    .table {
+        border: 1px solid #ddd;
+    }
+  
+    .thead-dark {
+        background-color: #00539B; 
+        color: white;
+    }
+    body {
+        background-image: url("{% static 'images/uvaLeaderboard.png' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center center;
+                
+        }
+  
+    /* Styles for the leaderboard box */
+    .leaderboard-box {
+        border: 2px solid #00539B; /* Outline color*/
+        padding: 20px; /* Adds padding inside the box */
+        margin-top: 60px !important; /* Adds space above the box */
+        margin-bottom: 20px; /* Adds space below the box */
+        background-color: white; /*background color */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /*box shadow */
+        min-height: 800px; /* Minimum height to encapsulate potential space */
+    }
+    .navy-blue-btn, .uva-orange-btn {
+        border: none; 
+        color: white; 
+        padding: 5px 10px; 
+        font-size: 16px;
+    }
+
+    .navy-blue-btn {
+        background-color: #232D4B; 
+    }
+
+    .uva-orange-btn {
+        background-color: #F84C31; 
+    }
+
+    .gray-btn {
+        background-color: #808080;
+    }
+
+    .gray-btn:hover {
+        color: #FFFFFF;
+    }
+
+    .map-button {
+        display: inline-block; /* Make the container as wide as its content */
+        margin: 5px; 
+    }
+
+    .buttons-container {
+        text-align: center; /* Center-align buttons */
+    }
+
+  </style>
+  
+  
+</body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="leaderboard-box">
+                <h1 class="text-center my-4">Leaderboard</h1>
+
+                <div class="text-center mb-3">
+                    <a href="?sort=score" class="btn black-outline gray-btn">Sort by Score</a>
+                    <a href="?sort=games_played" class="btn black-outline gray-btn">Sort by Games Played</a>
+                    <a href="?sort=locations_approved" class="btn black-outline gray-btn">Sort by Submissions Approved</a>
+                </div>
+
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Rank</th>
+                            <th>Username</th>
+                            <th>Score</th>
+                            <th>Games Played</th>
+                            <th>Submissions Approved</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stats in top_users %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ stats.user.username }}</td>
+                            <td>{{ stats.score }}</td>
+                            <td>{{ stats.games_played }}</td>
+                            <td>{{stats.locations_approved }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="buttons-container fixed-bottom mb-3">
+    <div class="map-button">
+    </div>
+    <div class="map-button">
+        <a href="{% url 'home' %}" class="btn w-100 black-outline uva-orange-btn">Home Page</a>
+    </div>
+</div>
+

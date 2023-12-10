@@ -1,0 +1,110 @@
+{% load socialaccount %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <title>Hoo's Hot | Login</title>
+        <style>
+            /* Custom Styles */
+            /* ... (Your existing styles) ... */
+
+            /* Added styles for the modal */
+            body {
+                background-image: url("{% static 'images/uvaBackground.jpg' %}");
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center center;
+                font-family: Arial, sans-serif;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 3.5em;
+                text-shadow: 2px 2px 4px #aaa, -2px -2px 4px #aaa, 2px -2px 4px #aaa, -2px 2px 4px #aaa; /* Giving it a cloudy effect */
+                margin-bottom: 20px;
+                color: #ffffff;
+                background-color: rgba(0,0,0,0.3);
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .btn-login {
+                background-color: darkorange;
+                border: none;
+                padding: 15px 80px; /* Making the button wide */
+                border-radius: 50px; /* Circular effect */
+                font-size: 1.2em;
+                font-weight: 600;
+                box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+                color: #ffffff; /* White text */
+                margin-bottom: 20px;
+                transition: all 0.3s ease; /* Smooth transition for hover effect */
+            }
+
+            .btn-login:hover {
+                background-color: #0056b3; /* Darker shade on hover */
+                box-shadow: 0 0 20px rgba(0,0,0,0.3); /* Enhanced shadow on hover */
+            }
+            .modal-content {
+                background-color: rgba(255, 255, 255, 0.9);
+                border-radius: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="text-center">
+            <h1>Hoo's Hot and Cold?</h1>
+
+            <!-- Google OAuth direct login form -->
+            <form action="{% provider_login_url 'google' method='login' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn-login">Login with Google</button>
+            </form>
+
+            <!-- About Button -->
+            <button type="button" class="btn-login" data-toggle="modal" data-target="#aboutModal">About</button>
+        </div>
+
+        <!-- About Modal -->
+        <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="aboutModalLabel">Welcome to Hoo's Hot and Cold!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Hoo's Hot and Cold is an interactive, location-based game that brings the classic childhood game of hot and cold into the digital age. Our app offers a unique and engaging way to explore and discover new places around grounds!</p>
+                
+                <h5>How It Works:</h5>
+                
+                <ol>
+                    <li><strong>Submit Locations for Games:</strong> Users like you can submit interesting locations as potential game spots. These could be landmarks, parks, art installations, or any place you find intriguing. Each location becomes a new adventure for players to discover.</li>
+                    <li><strong>Start and Continue Games:</strong> Once a location is set, you can start a game. The game's objective is to find the hidden location using the clues provided. You can also continue previously started games, making it easy to play at your own pace.</li>
+                    <li><strong>Navigate with the Interactive Marker:</strong> As a player, you'll use an interactive marker on a map interface to search for the hidden location. Move the marker around as you hypothesize where the destination might be.</li>
+                    <li><strong>Use Hints to Your Advantage:</strong> Feeling lost? Use the "Get Hint" button! It's a crucial tool in the game, letting you know if you're getting 'hotter' (closer to the location) or 'colder' (farther away). These hints are based on your marker's movements in relation to the hidden location, guiding you towards the target.</li>
+                    <li><strong>Discover and Enjoy:</strong> Each game is an opportunity to explore and uncover new places. Whether you're playing solo or with friends, Hoo's Hot and Cold promises a fun and thrilling experience as you unravel the mysteries of each location.</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <!-- Include Bootstrap JavaScript at the end of your document -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+</html>

@@ -1,0 +1,193 @@
+<!--
+ From: Django tutorial
+ Used: The form was adapted from the Django tutorial to instead
+ display instances of our model and present actions the user can take
+-->
+<!--
+ From: ChatGPT
+ Used: Using forms to call views, adapted response to call our views
+-->
+
+
+{% load socialaccount %}
+{% load static %}
+<html>
+<head>
+<!-- Background -->
+<style>
+    body {
+      background-image: url("https://cdn.rbiva.com/wp-content/uploads/2020/06/RBI_Featured-Image_ConstuctionProject_UVARotunda.jpg"); 
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: center center;
+    }
+
+    </style>
+    <title>Hoo's Hot | User Submissions</title>
+</head>
+<body>
+<!-- Form adapted from: Django tutorial -->
+  <!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<div class="container">
+{% if game_submissions %}
+    <ul>
+    {% for game in game_submissions %}
+
+    <p class="game-name-large">Name: {{ game.name }}</p>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY4E9uAdgpAZNzSTNIofmkZdKAAIE37X4&callback=initMap" async defer></script>
+        <script>
+            var map;
+            var marker;
+            function initMap() {
+                var initialLocation = {lat: {{ game.latitude }}, lng: {{ game.longitude}}};
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: initialLocation,
+                    zoom: 17
+                });
+
+                marker = new google.maps.Marker({
+                    position: initialLocation,
+                    map: map,
+                    draggable: false
+                });
+
+            }
+        </script>
+        <style>
+            /* Map styling */
+            #map {
+                height: 70%;
+                width: 70%; 
+                margin: 0 auto; /* This will center the map in its parent container */
+            }
+            
+            /* Black outline  */
+            .black-outline {
+                border: 1px solid black !important;
+            }
+            
+            /* Style for the game name */
+            .game-name-large {
+                font-size: 24px;
+                font-weight: bold;
+                text-align: center; 
+                color: white;
+                background-color: #000080;
+                width: 70%;
+                margin: 0 auto;
+            }
+
+            
+            /* Buttons container styling */
+            .buttons-container {
+                display: flex;
+                justify-content: space-between; 
+                width: 80%; 
+                margin: 20px auto; 
+            }
+
+            
+            .map-button {
+                flex-basis: 49%; /* Assigns a base width of just under half of the container's width to each button */
+            }
+            .navy-blue-btn {
+            background-color: #000080;
+            color: white;
+            }
+            .uva-orange-btn {
+            background-color: #F84C1E;
+            color: white;
+            }
+            .approve-button {
+            background-color: #28a745; 
+            color: white;
+            }
+
+            .deny-button {
+            background-color: #dc3545; 
+            color: white;
+            }
+        </style>
+
+        </style>
+        <div id="map" class="mb-3 black-outline"></div>
+        <!-- Using forms to call views from: ChatGPT -->
+        <div class="buttons-container">
+            <form method="post" action="{% url 'approve_game' game.id %}" class="map-button">
+            {% csrf_token %}
+            <button type="submit" class="btn w-100 black-outline approve-button">Approve</button>
+            </form>
+            <form method="post" action="{% url 'deny_game' game.id %}" class="map-button">
+        {% csrf_token %}
+        <button type="submit" class="btn w-100 black-outline deny-button">Deny</button>
+            </form>
+        </div>
+</div>
+
+        <!-- Return to Login and Home Page Buttons -- meant to float off to the left and not bother the rest of the page.-->
+        <div class="buttons-container mb-3" style="position:fixed;top:0;left:0">
+            <div class="map-button">
+                <a href="{% url 'login_game' %}" class="btn w-50 black-outline navy-blue-btn">Return to Login</a>
+            </div>
+        </div>
+        <div class="buttons-container mb-3" style="position:fixed;top:60;left:0;">
+            <div class="map-button">
+                <a href="{% url 'home' %}" class="btn w-50 black-outline uva-orange-btn">Home Page</a>
+            </div>
+        </div>
+
+ 
+
+    {% endfor %}
+    </ul>
+{% else %}
+
+    <!-- The majority of this is repetition of styling in the if statement -->
+    <style>
+        .map-button {
+            flex-basis: 49%; /* Assigns a base width of just under half of the container's width to each button */
+        }
+        .uva-orange-btn {
+            background-color: #F84C1E;
+            color: white;
+        }
+        .navy-blue-btn {
+            background-color: #000080;
+            color: white;
+        }
+        .no-games {
+            width:70%;
+            display:flex;
+            justify-content:center;
+            margin:0 auto;
+            margin-bottom:5px;
+        }
+        .no-games-paragraph {
+            text-align:center;
+            font-size:24px;
+            background-color:#000080;
+            color:white;
+            width:100%;
+        }
+    </style>
+
+    <div class="no-games">
+        <p class="no-games-paragraph">No games awaiting approval...</p>
+    </div>
+    <div class="no-games">
+        <a href="{% url 'home' %}" class="btn w-50 black-outline uva-orange-btn">Home Page</a>
+    </div>
+    <div class="no-games">
+        <a href="{% url 'login_game' %}" class="btn w-50 black-outline navy-blue-btn">Log Out</a>
+    </div>
+{% endif %}
+
+    <!-- Include Bootstrap JavaScript at the end of your document -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoo's Hot | Submit a Game</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        #map {
+    
+            height: 70vh;
+            width: 100%;
+        }
+        /* Background */
+        body {
+                background-image: url("https://cdn.rbiva.com/wp-content/uploads/2020/06/RBI_Featured-Image_ConstuctionProject_UVARotunda.jpg");
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center center;
+                font-family: Arial, sans-serif;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }
+        
+    </style>
+    <style>
+        .black-outline {
+            border: 1px solid black !important;
+        }
+        .navy-blue-btn {
+            background-color: #000080;
+            color: white;
+        }
+        .uva-orange-btn {
+            background-color: #F84C1E;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.7.12/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY4E9uAdgpAZNzSTNIofmkZdKAAIE37X4&callback=initMap" async defer></script>
+    <script>
+        var map;
+        var marker;
+        function initMap() {
+            var initialLocation = {lat: 38.0353, lng: -78.5035};
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: initialLocation,
+                zoom: 15
+            });
+
+            marker = new google.maps.Marker({
+                position: initialLocation,
+                map: map,
+                draggable: true
+            });
+
+            google.maps.event.addListener(marker, 'dragend', function(evt) {
+                document.getElementById('id_latitude').value = evt.latLng.lat().toFixed(6);
+                document.getElementById('id_longitude').value = evt.latLng.lng().toFixed(6);
+            });
+
+        }
+    </script>
+    <div class="container my-4">
+        <form method="post">
+            {% csrf_token %}
+    
+            <!-- Google Map with black outline -->
+            <div id="map" class="mb-3 black-outline"></div>
+            
+            <!-- Text Box for the Name of the Location with black outline -->
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Apply black outline to the text input -->
+                        <input type="text" name="{{ form.name.html_name }}" id="id_{{ form.name.html_name }}" 
+                        class="form-control black-outline" placeholder="Enter Name of Location Here" 
+                        value="{{ form.name.value|default_if_none:'' }}" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+            <div class="row">
+                <div class="col-12">
+                <!-- Apply black outline to the text input -->
+                <input type="text" name="{{ form.starting_hint.html_name }}" id="id_{{ form.starting_hint.html_name }}"
+                class="form-control black-outline" placeholder="Enter Starting Hint Here"
+                value="{{ form.starting_hint.value|default_if_none:'' }}" />
+                </div>
+            </div>
+            </div>
+    
+            <!-- Hidden Latitude and Longitude Fields -->
+            <div class="d-none">
+                {{ form.latitude }}
+                {{ form.longitude }}
+            </div>
+
+            <!-- Submit Button with black outline -->
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success w-100 black-outline">Create Game</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Go to Home Page Button -->
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <!-- Centered Home Page Button -->
+                        <a href="{% url 'home' %}" class="btn btn-info w-50 black-outline uva-orange-btn">Home Page</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Include Bootstrap JavaScript at the end of your document -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    

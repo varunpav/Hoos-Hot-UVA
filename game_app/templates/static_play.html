@@ -1,0 +1,130 @@
+<!--
+ From: ChatGPT (but made changes / adaptations)
+ Used: Making an AJAX request to your Django view (additions were made to
+ specify the correct content and refresh the page after the request was made).
+ -->
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoo's Hot | Game</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY4E9uAdgpAZNzSTNIofmkZdKAAIE37X4&callback=initMap" async defer></script>
+    <script>
+        var map;
+        var marker;
+        function initMap() {
+            var initialLocation = {lat: {{ lat }}, lng: {{ lon }}};
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: initialLocation,
+                zoom: 15
+            });
+            marker = new google.maps.Marker({
+                position: initialLocation,
+                map: map,
+                draggable: true
+            });
+
+            // Add the destination as a marker if playing a tutorial
+            {% if is_tut %}
+                destination = new google.maps.Marker({
+                    position: {lat: {{ dlat }}, lng: {{ dlon }}},
+                    // From docs: https://developers.google.com/maps/documentation/javascript/markers#icons
+                    map: map,
+                    draggable: false,
+                    icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                    }
+                });
+            {% endif %}
+
+            google.maps.event.addListener(marker, 'dragend', function(evt) {
+                document.getElementById('id_latitude').value = evt.latLng.lat().toFixed(6);
+                document.getElementById('id_longitude').value = evt.latLng.lng().toFixed(6);
+            });
+
+            // Event listener for the button click
+            document.getElementById('getHint').addEventListener('click', function () {
+                const markerPosition = marker.getPosition();
+                const latitude = markerPosition.lat();
+                const longitude = markerPosition.lng();
+
+                // From: ChatGPT
+                // Used: Making an AJAX request to your Django view
+                fetch("{% url 'update_hint' %}?lat=" + latitude + "&lng=" + longitude)
+                    .then(response => response.json())
+                    .then(data => {
+                    // After the AJAX request is complete, refresh the page
+                    location.reload();
+                });
+            });
+
+        }
+
+    </script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+            background: url("{% static 'images/bckrnd.png' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        #map {
+            height: 70vh;
+            width: 70vw;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            font-size: 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        #hint-text {
+            color: #333;
+            font-size: 24px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-top: 20px;
+        }
+        #starting-hint-text{
+            font-size: 1.6em;
+            color: black;
+            background-color: white;
+            border: 1px solid #cccccc;
+            padding: 10px;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px #eeeeee;
+            text-align: center;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="location.href='{% url 'home' %}'" style="margin-bottom: 20px;">Home Page</button>
+    <div id="map"></div>
+    <h1 id="hint-text">{{ hint }}</h1> <!-- The hint will be displayed here -->
+    <button id="getHint">GET HINT</button> <!-- The functional 'Get Hint' button -->
+    <h2 id="starting-hint-text">Starting Hint: {{ starting_hint }}</h2>
+
+    <!-- Hidden fields to hold the latitude and longitude values -->
+    <input type="hidden" id="id_latitude" value="">
+    <input type="hidden" id="id_longitude" value="">
+</body>
+</html>

@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hoo's Hot | Results</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style>
+            body {
+                background-image: url("{% static 'images/tony_winning.jpg' %}");
+                
+            }
+
+            .text-container {
+                background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+                border-radius: 10px;
+                padding: 20px;
+                margin-top: 50px;
+                display: inline-block;
+            }
+
+            h1, h3 {
+                color: #343a40; /* Dark color for better contrast */
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for depth */
+            }
+
+            .btn-custom {
+                background-color: #007bff; /* Bootstrap primary color */
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                margin-top: 20px;
+                border-radius: 5px;
+                text-decoration: none;
+                font-size: 18px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="text-center">
+            <div class="text-container">
+                <h1>You found {{ name }}!</h1>
+                <h3>Hints used: {{ hint_count }}</h3>
+                <a href="{% url 'home' %}" class="btn btn-primary btn-custom">Home</a>
+            </div>
+        </div>
+    </body>
+</html>
